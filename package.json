@@ -1,0 +1,58 @@
+{
+  "name": "youtube-downloader-electron",
+  "version": "1.0.0",
+  "description": "YouTube视频下载器",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "prebuild": "npm run clean && npm run prepare-backend && npm run pack-backend",
+    "build": "electron-builder --win",
+    "prepare-backend": "node scripts/prepare-backend.js",
+    "pack-backend": "cd backend && pyinstaller --clean youtube_downloader.spec",
+    "clean": "rimraf dist backend/dist backend/build",
+    "install-deps": "node scripts/install-deps.js"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.youtube.downloader",
+    "productName": "youtube-downloader",
+    "electronVersion": "25.9.8",
+    "directories": {
+      "output": "dist"
+    },
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
+    },
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "backend/dist/youtube_downloader/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^25.9.8",
+    "electron-builder": "^24.9.1",
+    "electron-download": "^4.1.1",
+    "wait-on": "^8.0.1",
+    "rimraf": "^5.0.1"
+  }
+}
